@@ -18,9 +18,13 @@
 		<!-- Подключаем наш файл со стилями, который находится в папке css-->
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="css/bootstrap-grid.min.css">
+		<link rel="stylesheet" href="css/animate.css">
 
 		<!-- Поключаем Google-шрифты -->
 		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
+
+		<!-- Подключаем дополнительные JS библиотеки -->
+
 </head>
 
 <body>
@@ -33,25 +37,25 @@
 				<!-- Первая строка заголовка -->
 				<div class="col-lg-7">
 					<!-- Блок с логотипом сайта в заголовке -->
-					<img class="header-img" src="img/main-img.png" alt="Монитор">
+					<img class="header-img wow bounceInLeft" src="img/main-img.png" alt="Монитор">
 				</div>
 				<!-- /.col-7 -->
 				<div class="col-lg-5">
 					<!-- Блок с основным текстовым заголовком и подзаголовками-->
-					<p class="header-pretitle">
+					<p class="header-pretitle wow bounceInRight" data-wow-delay="0.1s">
 						Веб-разработчик
 					</p>
 					<!-- /.header-pretitle -->
-					<h1 class="header-title">
+					<h1 class="header-title wow bounceInRight" data-wow-delay="0.3s">
 						Сергей Верес
 					</h1>
 					<!-- /.header-title -->
-					<p class="header-subtitle">
+					<p class="header-subtitle wow bounceInRight"data-wow-delay="0.5s">
 						Верстка на HTML/CSS <br>
 						Разработка сайтов под ключ
 					</p>
 					<!-- /.header-subtitle -->
-					<div class="header-button-block">
+					<div class="header-button-block wow bounceInRight" data-wow-delay="0.7s">
 						<a class="header-button" href="https://www.facebook.com/serghiyveres" target="blank">
 							Связаться
 						</a>
@@ -72,8 +76,8 @@
 
 	<section class="portfolio">
 		<!-- Это содержимое сайта-->
-		<div class="container">
-			<div class="portfolio-block">
+		<div class="container wow flipInX">
+			<div class="portfolio-block ">
 				<h2 class="portfolio-title">
 					Портфолио
 				</h2>
@@ -126,10 +130,18 @@
 				<div class="col-md-4">
 					<div class="social-block">
 						<p>Подпишитесь:</p>
-						<a href="https://www.facebook.com/serghiyveres" target="blank"><img src="img/socials/facebook-logo-button.png" alt="Facebook"></a>
-						<a href="https://vk.com/sver777" target="blank"><img src="img/socials/vk-social-logotype.png" alt="Вконтакте"></a>
-						<a href="#" target="blank"><img src="img/socials/telegram-symbol.png" alt="Telegram"></a>
-						<a href="#" target="blank"><img src="img/socials/youtube-symbol.png" alt="YouTube"></a>
+						<a href="https://www.facebook.com/serghiyveres" target="blank">
+							<img src="img/socials/facebook-logo-button.png" class="wow flipInY" data-wow-delay="0.1s" alt="Facebook">
+						</a>
+						<a href="https://vk.com/sver777" target="blank">
+							<img src="img/socials/vk-social-logotype.png" class="wow flipInX" data-wow-delay="0.2s" alt="Вконтакте">
+						</a>
+						<a href="#" target="blank">
+							<img src="img/socials/telegram-symbol.png" class="wow flipInY" data-wow-delay="0.3s" alt="Telegram">
+						</a>
+						<a href="#" target="blank">
+							<img src="img/socials/youtube-symbol.png" class="wow flipInX" data-wow-delay="0.4s" alt="YouTube">
+						</a>
 					</div>
 				</div>
 				<!-- /.col-4 -->
@@ -146,5 +158,10 @@
 		</div>
 		<!-- /.container -->
 	</footer>
+	<script src="js/wow.min.js"></script>
+	<script>
+		new WOW().init();
+	</script>
+
 </body>
 </html>

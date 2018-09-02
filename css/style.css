@@ -38,7 +38,7 @@ header {
 
 .header-button {
 	display: inline-block;
-	box-shadow: 10px 17px 34px 6px rgba(18, 61, 145, 0.83);
+	box-shadow: 0 10px 34px 6px rgba(18, 61, 145, 0.83);
 	border: 0;
 	border-radius: 50px;
 	background-color: #ffffff;
@@ -48,6 +48,29 @@ header {
 	padding: 17px 57px 19px 55px;
 	margin-top: 33px;
 	text-decoration: none;
+	transform: rotateX(-25deg);
+	transition-duration: 0.3s;
+	transition-property: box-shadow, transform, margin-bottom;
+	-webkit-transition-timing-function: ease-out;
+	-o-transition-timing-function: ease-out;
+	transition-timing-function: ease-out;
+	perspective: 1000px;
+}
+
+.header-button:hover {
+	box-shadow: 0px 0px 15px rgba(18, 61, 145, 0.83);
+	border: 0;
+	border-radius: 50px;
+	background-color: #ffffff;
+	color: #072b6f;
+	font-size: 18px;
+	font-weight: 700;
+	padding: 17px 57px 19px 55px;
+	margin-top: 33px;
+	margin-bottom: 20px;
+	transform: rotateX(0deg);
+
+	
 }
 
 header small {
@@ -207,6 +230,26 @@ footer {
 	padding:15px 40px;
 	color: #deedfe;
 	font-size: 18px;
+	transform: rotateY(20deg);
+	-webkit-transition-duration: 0.3s;
+	-o-transition-duration: 0.3s;
+	transition-duration: 0.3s;
+	-webkit-transition-property: box-shadow, transform;
+	-o-transition-property: box-shadow, transform;
+	transition-property: box-shadow, transform;
+	-webkit-transition-timing-function: ease-out;
+	-o-transition-timing-function: ease-out;
+	transition-timing-function: ease-out;
+}
+
+.footer-button:hover {
+	box-shadow: 0 0 20px rgba(18, 61, 145, 0.9),
+				inset 0 0 20px rgba(18, 61, 145, 0.9);
+	border: 1px solid #ffffff;
+	padding:15px 40px;
+	color: #deedfe;
+	font-size: 18px;
+	transform: rotateY(-10deg);
 }
 
 /*@media 1200px*/
