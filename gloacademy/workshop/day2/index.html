@@ -9,12 +9,17 @@
     <style>
         img {
             max-width: 100%;
+            border-radius: .3rem;
         }
 
         .item {
             margin: 15px 0;
             text-align: center;
             font-weight: 700;
+        }
+
+        .bg-fill {
+            background-color: #CF94D8;  
         }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -24,8 +29,8 @@
         <div class="container"><a href="index.html" class="navbar-brand">KinoUniverse</a></div>
     </nav>
     <div class="container">
-        <div class="jumbotron">
-            <h3 class="text-center">Поиск фильмов</h3>
+        <div class="jumbotron bg-info">
+            <h3 class="text-center display-4">Поиск фильмов</h3>
             <form action="" id="search-form">
                 <input type="text" class="form-control" id="searchText" placeholder="Введите название...">
             </form>

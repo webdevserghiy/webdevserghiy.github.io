@@ -20,7 +20,7 @@ function apiSearch(event) {
 				let nameItem = item.name || item.title;
 				inner += `
 				<div class="col-12 col-md-4 col-xl-3 item">
-					<img src="${item.poster_path ? urlPoster + item.poster_path : 'http://dummyimage.com/500x750.jpg/729da8/000000&text=НЕТ_ПОСТЕРА!'}" alt="${nameItem}">
+					<img src="${item.poster_path ? urlPoster + item.poster_path : 'http://dummyimage.com/500x750.jpg/683AB7/ffffff&text=НЕТ_ПОСТЕРА!'}" alt="${nameItem}">
 					<h5>${nameItem}</h5>
 				</div>
 				`;
