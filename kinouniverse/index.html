@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="RU">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>KinoUniverse</title>
+    <script src="./js/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container"><a href="index.html" class="navbar-brand"><p class="h1 display-2 text-dark">KinoUniverse</p></a></div>
+    </nav>
+    <div class="container-fluid">
+        <div class="jumbotron bg-dark">
+
+            <div class="jumbotron-background">
+                <img src="./img/bg-search.jpg" class="blur ">
+            </div>
+            <div class="container text-white">           
+                <h3 class="text-center display-4 text-white">Поиск фильмов</h3>
+                <form action="" id="search-form">
+                    <input type="text" class="form-control" id="searchText" placeholder="Введите название...">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div id="movies" class="row justify-content-center">
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+    <!-- <script src="./js/slider.js"></script> -->
+</body>
+</html>
