@@ -1,1 +1,3 @@
-
+$(function(){
+    $('.block').draggable();
+  });

@@ -1,1 +1,41 @@
-
+html {
+    background: url('/img/119603.jpg') no-repeat fixed center / cover;
+    position: relative;
+    overflow-y: scroll;
+  }
+  body {
+    background: inherit;
+    display: flex;
+    min-height: 100vh;
+  }
+  .block * {
+    position: relative;
+  }
+  .block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 400px;
+    height: 300px;
+    box-shadow: 1px 1px 4px rgba(14, 14, 14, .3);
+    border: 15px solid rgba(255, 255, 255, .15);
+    border-radius: 15px;
+    text-shadow: 0 1px 0 #333;
+    color: #fff;
+    background: inherit;
+    cursor: move;
+  }
+  .block:before {
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: inherit;
+    filter: blur(5px);
+    filter: url(#blur);
+  }
