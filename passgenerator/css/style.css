@@ -1,0 +1,10 @@
+.out {
+	margin-top: 30px;
+}
+
+.out p {
+	display: block;
+	padding: 15px;
+	font-size: 1.3em;
+	font-weight: 700;
+}
