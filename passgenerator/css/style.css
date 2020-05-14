@@ -2,9 +2,23 @@
 	margin-top: 30px;
 }
 
-.out p {
+.out p.bg-success {
 	display: block;
 	padding: 15px;
-	font-size: 1.3em;
+	font-size: 1.3vw;
 	font-weight: 700;
+	border-radius: 10px;
+	border: 1px solid green;
+	box-shadow: 0 0 10px green;
+	-ms-word-break: break-all;
+	word-break: break-all;
+}
+
+.copy-button {
+	max-width: 300px;
+}
+
+.checked {
+	background: #66bb6a;
+	
 }
