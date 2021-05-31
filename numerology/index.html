@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Определение типа личности</title>
+   <link rel="stylesheet" href="css/main.css">
+   <link rel="stylesheet" href="css/animate.min.css">
+</head>
+<body>
+   <header>
+      <h1>Определение типа личности по дате рождения</h1>
+   </header>
+   <div class="form">
+      <h2>Форма для ввода обрабатываемых данных</h2>
+
+      <form action="">
+         <label for="birthdate">Укажите дату Вашего рождения</label><br>
+         <input class="birthdate" type="date" name="birthdate" id="birthdate">
+      </form>
+
+      <p class="p1 animate__animated animate__flipInX">
+         Спасибо!
+      </p>
+      <p class="p2 animate__animated animate__flipInX">
+         Информация принята и загружена в алгоритм вычисления
+      </p>
+      <p class="p3 animate__animated animate__flipInX">
+         Идет обработка..
+      </p>
+   </div>
+   <div class="result animate__animated animate__flipInX">
+      <h2>Вывод результатов вычислений</h2>
+      <div class="calculation">
+         <h3>Обработка данных прошла успешно!</h3>
+         <p class="calculation-birthdate">
+            Ваша дата рождения: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>
+         </p>
+         <h3>Энергетический профиль вычислен...</h3>
+         <p class="calculation-energy">
+            Ваш энергетический профиль набрал: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span> баллов
+         </p>
+         <h3>Ваш тип личности успешно определён...</h3>
+         <p class="calculation-identity">
+            Ваш энергетический профиль набрал: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span> баллов
+         </p>
+      </div>
+      <div class="energy">
+         <h3 class="energy-header">Ваш энергетический профиль "<span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>"</h3>
+         <p class="energy-description"></p>
+      </div>
+      <div class="identity">
+         <h3 class="identity-header">Ваш тип личности "<span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>"</h3>
+         <p class="identity-description"></p>
+      </div>
+   </div>
+   <footer></footer>
+   <script src="js/wow.min.js"></script>
+	<script>
+		new WOW().init();
+	</script>
+   <script src="js/main.js"></script>
+</body>
+
+</html>
