@@ -1,10 +1,9 @@
 function sumNumber(num) {
+   //Функция принимает строку, содержащую в себе цифры и возвращает сумму этих цифр в числовом типе данных
    let inp, outp;
    outp = 0;
    inp = num.toString();
-   // console.log(typeof (inp));
    for (let i = 0; i < inp.length; i++) {
-      
       outp += parseInt(inp[i]);
    }
    return outp;
@@ -25,10 +24,13 @@ const energyIdentity = {
 }
 
 
-let birthDate, p, outBirthDate, form, resBlock, outEnergyProf, outIdProfile, headerBlock;
+let wellcomeBlock, wellcomeBut, actionBlock, birthDate, p, outBirthDate, form, resBlock, outEnergyProf, outIdProfile, headerBlock;
 let resEProfHdr, resEProfDef, resIProfHdr, resIProfDef;
 let eProfile, iProfile;
 
+wellcomeBlock = document.querySelector('.wellcome');
+wellcomeBut = document.querySelector('.wellcome-button>button');
+actionBlock = document.querySelector('.action');
 headerBlock = document.querySelector('header');
 form = document.querySelector('.form>form');
 p = document.querySelectorAll('[class^="p"]');
@@ -41,6 +43,32 @@ resEProfDef = document.querySelector('.energy-description');
 resIProfHdr = document.querySelector('.identity-header>span');
 resIProfDef = document.querySelector('.identity-description');
 // console.log(form.birthdate);
+
+wellcomeBut.addEventListener('click', function () {
+   
+   let j = 4;//количество секунд для задержки
+      let timer = setInterval(function() {
+         j--;
+         if (j === 3) {
+            console.log(wellcomeBlock.style.transform);
+            wellcomeBlock.style.transform = 'perspective(500px) rotateX(90deg)';
+            console.log(wellcomeBlock.style.transform);
+         }
+         if (j === 2) {
+            wellcomeBlock.style.display = 'none';
+            // clearInterval(timer); //MUSTHAVE!!!!!
+         }
+         if (j === 1) {
+            actionBlock.style.display = 'block';
+            // clearInterval(timer); //MUSTHAVE!!!!!
+         }
+         if (j === 0) {
+            actionBlock.style.transform = 'rotateX(0deg)';
+            clearInterval(timer); //MUSTHAVE!!!!!
+         }
+      }, 1000);//Интерв1000 = 1 секунда
+})
+
 
 form.birthdate.addEventListener('blur', function () {
    birthDate = form.birthdate.value;
@@ -70,7 +98,7 @@ form.birthdate.addEventListener('blur', function () {
             }
             
             resBlock.style.display = 'block';
-            headerBlock.style.margin = '10px';
+            // headerBlock.style.margin = '10px';
             clearInterval(timer);
             outBirthDate.innerText = birthDate;
             calculate();

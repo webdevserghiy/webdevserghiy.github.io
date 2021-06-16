@@ -1,38 +1,182 @@
+@font-face {
+   font-family: 'SF UI Text';
+   src: url('../fonts/SFUIText-Regular.eot');
+   src: local('../fonts/SF UI Text Regular'),
+   local('../fonts/SFUIText-Regular'),
+      url('../fonts/SFUIText-Regular.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/SFUIText-Regular.woff') format('woff'),
+      url('../fonts/SFUIText-Regular.ttf') format('truetype');
+   font-weight: normal;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'SF UI Light';
+   src: url('../fonts/SFUIText-Light.eot');
+   src: local('../fonts/SF UI Text Light'),
+      local('../fonts/SFUIText-Light'),
+      url('../fonts/SFUIText-Light.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/SFUIText-Light.woff') format('woff'),
+      url('../fonts/SFUIText-Light.ttf') format('truetype');
+   font-weight: normal;
+   font-style: normal;
+}
+
 body {
    margin: 0 auto;
    font-size: 16px;
-   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+   font-family: 'SF UI Text', Arial, "Helvetica Neue", Helvetica, sans-serif;
+   background: url(/img/bg-5.jpg) no-repeat;
+   /* background-size: contain; */
 }
+
+.main {
+   display: flex;
+   flex-direction: column;
+}
+
+h1 {
+   font-size: calc(32px + 16 * (100vw / 1280));
+}
+
 h2 {
-      text-align: center;
-      text-transform: uppercase;
+   text-align: center;
+   text-transform: uppercase;
+   font-size: calc(24px + 16 * (100vw / 1280));
 }
-header {
-      margin: 100px;
-      border-radius: 2rem;
-      border: 1px solid rgba(0, 0, 0, 1);
-      text-align: center;
-      text-transform: uppercase;
-      transition: margin 0.5s linear;
+
+.wellcome {
+   order: 1;
+   display: flex;
+   flex-direction: column;
+   align-content: center;
+   background-color: rgba(28, 28, 28, 0.7);
+   color: #fff;
+   text-shadow: rgb(168, 168, 199) 0 0 5px;
+   margin: 30px;
+   padding: 30px;
+   border-radius: 20px;
+   backdrop-filter: blur(5px);
+   transition: transform 1s ease;
+}
+
+.wellcome-title {
+   order: 1;
+}
+
+.wellcome-paragraph {
+   order: 2;
+   /* margin: 30px; */
+}
+
+.wellcome-paragraph>p {
+   font-size: calc(16px + 16 * (100vw / 1280));
+   font-family: "SF UI Light", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.wellcome-button {
+   order: 3;
+   text-align: center;
+   /* position: relative; */
+}
+
+.wellcome-button>button {
+   /* position: absolute; */
+   background-color: #007AFF;
+   color: #fff;
+   border-radius: 20px;
+   font-size: calc(16px + 16 * (100vw / 1280));
+   padding: 10px;
+   border: none;
+   transform: perspective(500px);
+   transition: background-color 0.1s ease, transform 0.2s ease, text-shadow 0.2 ease, box-shadow 0.2 ease, font-family 0.2s ease;
+}
+
+.wellcome-button>button:hover {
+   box-shadow: 2px 2px 4px rgb(37, 37, 37);
+   background-color: #0670e2;
+   text-shadow: 0 0 2px rgb(4, 7, 184);
+   font-family: "SF UI Light", "Helvetica Neue", Helvetica, sans-serif;
+   /* transform: rotateX(360deg); */
+}
+
+.wellcome-button>button:active {
+   background-color: #e71313;
+   transform: perspective(500px) translateZ(20px) rotateY(5deg) rotateX(10deg);
+}
+
+.action {
+   order: 2;
+   display: none;
+   display: flex;
+   flex-direction: column;
+   align-content: center;
+   /* background-color: rgba(28, 28, 28, 0.7); */
+   background-color: rgba(255, 255, 255, .6);
+   color: #000;
+   text-shadow: rgb(168, 168, 199) 0 0 5px;
+   margin: 10% 10%;
+   padding: 30px;
+   border-radius: 20px;
+   backdrop-filter: blur(5px);
+   transition: transform 1s ease;
+   transform: perspective(500px) rotateX(-90deg);
+   overflow: hidden;
+}
+.action-header {
+      margin: -30px -30px 0 -30px;
+      padding: calc(10px + 16 * (100vw / 1280)) 25px;
+      /* border-radius: 20px; */
+      /* border: 1px solid rgba(0, 0, 0, 1); */
+      /* box-shadow: 0px 0.3px 0.3px gray; */
+      
+      /* transition: margin 0.5s linear; */
+      background-color: rgba(255, 255, 255, .1);
+      /* backdrop-filter: blur(5px); */
+}
+
+.title {
+   font-family: "SF UI Light", "Helvetica Neue", Helvetica, sans-serif;
+   font-size: calc(14px + 16 * (100vw / 1280));
+   text-align: left;
+   text-transform: uppercase;
+   color: rgba(0, 0, 0, 0.2);
+   text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.title>img {
+   width: calc(8px + 16 * (100vw / 1280));
 }
 
 .form {
-   margin: 10px;
+   /* order: 2; */
+   /* margin: 2% 2%; */
    border-radius: 2rem;
-   border: 1px solid rgba(0, 0, 0, 1);
+   /* border: 1px solid rgba(0, 0, 0, 1); */
    text-align: center;
    transition: height 0.5s linear;
+   /* background-color: rgba(255, 255, 255, .6); */
+}
+
+.form-title {
+   padding-top: 15px;
+   font-family: "SF UI Light", "Helvetica Neue", Helvetica, sans-serif;
+   font-size: calc(18px + 16 * (100vw / 1280));
+   text-align: center;
+   /* text-transform: uppercase; */
+   color: rgba(0, 0, 0, 1);
+   text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
 .form>p {
    display: none;
-   font-size: 18px;
+   font-size: calc(18px + 16 * (100vw / 1280));
    font-weight: 500;
    text-shadow: 0 0 3px rgb(6, 1, 78);
 }
 
 .form>form {
    padding: 10px;
+   
 }
 
 .form>form>label {
@@ -60,14 +204,31 @@ header {
    box-shadow: rgb(206, 11, 102) 0 0 20px;
 }
 .calculation>p>span {
-   text-shadow: 0 0 4px red;
+   text-shadow: 0 0 5px rgba(0, 122, 255, .9);
    font-weight: 700;
    font-size: 24px;
 }
 .result {
+   /* order: 3; */
    display: none;
    margin: 10px;
-   border-radius: 2rem;
-   border: 1px solid rgba(0, 0, 0, 1);
+   border-radius: calc(6px + 16 * (100vw / 1280));
+   border: 0.4px solid rgba(0, 0, 0, 1);
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3),
+               inset 0 0 5px rgba(0, 0, 0, 0.3);
    text-align: center;
+   overflow: hidden;
+   backdrop-filter: blur(0.5px);
+}
+
+.result-header {
+   margin: 0px -30px 0 0px;
+   padding: calc(2px + 16 * (100vw / 1280)) 25px;
+   /* border-radius: 20px; */
+   /* border: 1px solid rgba(0, 0, 0, 1); */
+   /* box-shadow: 0px 0.3px 0.3px gray; */
+
+   /* transition: margin 0.5s linear; */
+   background-color: rgba(255, 255, 255, .2);
+   /* backdrop-filter: blur(5px); */
 }

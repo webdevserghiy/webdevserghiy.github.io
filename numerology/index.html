@@ -9,58 +9,105 @@
    <link rel="stylesheet" href="css/animate.min.css">
 </head>
 <body>
-   <header>
-      <h1>Определение типа личности по дате рождения</h1>
-   </header>
-   <div class="form">
-      <h2>Форма для ввода обрабатываемых данных</h2>
+   <!-- Main container -->
+   <div class="main">
+      <div class="wellcome">
+         <div class="wellcome-title">
+            <h2>Энергетика Вселенной</h2>
+         </div>
+         <div class="wellcome-paragraph">
+            <p>
+               На этой странице можно узнать насколько сильно Вы наделены способностями подпитываться жизненной энергией от Вселенной. Каждый сможет узнать может свой уровень силы. Энергия Вселенной есть в каждом из нас, просто надо уметь её исмерять. Это можно сделать путем специального алгоритма вычислений, который можно запустить только на ЭВМ. Человеческий разум не способен справиться с вычислениями по этому алгоритму.
+               Для запуска алгоритма вычисления нажмите на кнопку ниже. 
+            </p>
+         </div>
+         <div class="wellcome-button">
+            <button>
+               <span>
+                  Записутить алгоритм
+               </span>
+            </button>
+         </div>
+         
+      </div>
+      <div class="action">
+         <!-- Header block -->
+         <div class="action-header">
+            <div class="title">
+               <img src="/img/icons/search.png" alt="Search">
+               <span>Расчёт типа личности по дате рождения</span>
+            </div>
+         </div>
+         <!-- Header block -->
+         <!-- Form block -->
+         <div class="form">
+            <div class="form-title">Форма для ввода данных в алгоритм</div>
 
-      <form action="">
-         <label for="birthdate">Укажите дату Вашего рождения</label><br>
-         <input class="birthdate" type="date" name="birthdate" id="birthdate">
-      </form>
+            <form action="">
+               <label for="birthdate">Укажите дату Вашего рождения</label><br>
+               <input class="birthdate" type="date" name="birthdate" id="birthdate">
+            </form>
 
-      <p class="p1 animate__animated animate__flipInX">
-         Спасибо!
-      </p>
-      <p class="p2 animate__animated animate__flipInX">
-         Информация принята и загружена в алгоритм вычисления
-      </p>
-      <p class="p3 animate__animated animate__flipInX">
-         Идет обработка..
-      </p>
+            <p class="p1 animate__animated animate__flipInX">
+               Спасибо!
+            </p>
+            <p class="p2 animate__animated animate__flipInX">
+               Информация принята и загружена в алгоритм вычисления
+            </p>
+            <p class="p3 animate__animated animate__flipInX">
+               Идет обработка..
+            </p>
+         </div>
+         <!-- Form block -->
+         <!-- Result block -->
+         <div class="result animate__animated animate__flipInX">
+            <div class="result-header">
+               <div class="title">
+                  <img src="/img/icons/result.png" alt="">
+                  <span>Вывод результатов вычислений</span>
+               </div>
+            </div>
+            <h2></h2>
+            <!-- Calculation sub-block -->
+            <div class="calculation">
+               <h3>Обработка данных прошла успешно!</h3>
+               <p class="calculation-birthdate">
+                  Ваша дата рождения: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>
+               </p>
+               <h3>Энергетический профиль вычислен...</h3>
+               <p class="calculation-energy">
+                  Ваш энергетический профиль набрал: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span> баллов
+               </p>
+               <h3>Ваш тип личности успешно определён...</h3>
+               <p class="calculation-identity">
+                  Ваш энергетический профиль набрал: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span> баллов
+               </p>
+            </div>
+            <!-- Calculation sub-block -->
+            <!-- Result energy profile sub-block -->
+            <div class="energy">
+               <h3 class="energy-header">Ваш энергетический профиль "<span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>"</h3>
+               <p class="energy-description"></p>
+            </div>
+            <!-- Result energy profile sub-block -->
+            <!-- Result identity sub-block -->
+            <div class="identity">
+               <h3 class="identity-header">Ваш тип личности "<span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>"</h3>
+               <p class="identity-description"></p>
+            </div>
+            <!-- Result identity sub-block -->
+         </div>
+         <!-- Result block -->
+      </div>
+      
+      
    </div>
-   <div class="result animate__animated animate__flipInX">
-      <h2>Вывод результатов вычислений</h2>
-      <div class="calculation">
-         <h3>Обработка данных прошла успешно!</h3>
-         <p class="calculation-birthdate">
-            Ваша дата рождения: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>
-         </p>
-         <h3>Энергетический профиль вычислен...</h3>
-         <p class="calculation-energy">
-            Ваш энергетический профиль набрал: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span> баллов
-         </p>
-         <h3>Ваш тип личности успешно определён...</h3>
-         <p class="calculation-identity">
-            Ваш энергетический профиль набрал: <span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span> баллов
-         </p>
-      </div>
-      <div class="energy">
-         <h3 class="energy-header">Ваш энергетический профиль "<span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>"</h3>
-         <p class="energy-description"></p>
-      </div>
-      <div class="identity">
-         <h3 class="identity-header">Ваш тип личности "<span>*** ДАННЫЕ НЕ ВВЕДЕНЫ ***</span>"</h3>
-         <p class="identity-description"></p>
-      </div>
-   </div>
-   <footer></footer>
    <script src="js/wow.min.js"></script>
 	<script>
 		new WOW().init();
 	</script>
    <script src="js/main.js"></script>
+   
 </body>
 
 </html>
