@@ -161,6 +161,23 @@
       transition: color 0.3s ease;
     }
 
+    button.randomize {
+      background: var(--slider-thumb);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      margin-top: 20px;
+    }
+
+    button.randomize:hover {
+      transform: scale(1.05);
+    }
+
     @media (min-width: 768px) {
       .container {
         flex-direction: row;
@@ -213,6 +230,8 @@
       <label for="iterationsRange">Кількість ітерацій (1 - 500,000):</label>
       <input type="range" id="iterationsRange" min="1" max="500000" value="10000">
       <span id="iterationsValue">10000</span>
+
+      <button class="randomize" id="randomizeButton">Рандомізувати</button>
     </div>
   </div>
 
@@ -243,6 +262,7 @@
     const iterationsRange = document.getElementById('iterationsRange');
     const iterationsValue = document.getElementById('iterationsValue');
     const themeToggle = document.getElementById('themeToggle');
+    const randomizeButton = document.getElementById('randomizeButton');
 
     sizeRange.addEventListener('input', updateSpirograph);
     RRange.addEventListener('input', updateSpirograph);
@@ -309,6 +329,40 @@
       isDarkTheme = !isDarkTheme;
       document.body.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
     });
+
+    // Рандомізація параметрів
+    randomizeButton.addEventListener('click', () => {
+      // Генеруємо випадкові значення для всіх параметрів
+      sizeRange.value = getRandomInt(200, 800);
+      RRange.value = getRandomInt(50, 400);
+      rRange.value = getRandomInt(10, 200);
+      dRange.value = getRandomInt(10, 200);
+      bgColorInput.value = getRandomColor();
+      lineColorInput.value = getRandomColor();
+      lineWidthRange.value = getRandomInt(1, 2000);
+      iterationsRange.value = getRandomInt(1000, 500000);
+
+      // Оновлюємо текстові поля
+      lineWidthValue.textContent = (parseInt(lineWidthRange.value) / 100).toFixed(2);
+      iterationsValue.textContent = parseInt(iterationsRange.value).toLocaleString();
+
+      // Оновлюємо графіку
+      updateSpirograph();
+    });
+
+    // Допоміжні функції
+    function getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
 
     // Початкове малювання
     drawSpirograph();
