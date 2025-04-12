@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Спірограф</title>
+  <style>
+    :root {
+      --background-color: #ffffff;
+      --text-color: #333333;
+      --container-bg: #ffffff;
+      --canvas-border: #e0e0e0;
+      --slider-bg: #e0e0e0;
+      --slider-thumb: #007aff;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="dark"] {
+      --background-color: #1c1c1e;
+      --text-color: #ffffff;
+      --container-bg: #2c2c2e;
+      --canvas-border: #3a3a3c;
+      --slider-bg: #3a3a3c;
+      --slider-thumb: #0a84ff;
+      --shadow-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: var(--background-color);
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--container-bg);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px var(--shadow-color);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--text-color);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 90vw;
+      margin: 0 auto;
+      background: var(--container-bg);
+      border-radius: 20px;
+      box-shadow: 0 10px 20px var(--shadow-color), 0 6px 6px var(--shadow-color);
+      padding: 20px;
+      overflow: hidden;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    canvas {
+      border: 2px solid var(--canvas-border);
+      border-radius: 15px;
+      margin-bottom: 20px;
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 4px 6px var(--shadow-color);
+      transition: border-color 0.3s ease;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      width: 100%;
+    }
+
+    label {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-color);
+      text-align: center;
+      transition: color 0.3s ease;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      max-width: 300px;
+      height: 8px;
+      appearance: none;
+      background: var(--slider-bg);
+      border-radius: 5px;
+      outline: none;
+      transition: background 0.3s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--slider-thumb);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: var(--slider-thumb);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      max-width: 300px;
+      height: 40px;
+      border: none;
+      border-radius: 10px;
+      background: var(--slider-bg);
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    input[type="color"]:hover {
+      transform: scale(1.05);
+    }
+
+    span#lineWidthValue, span#iterationsValue {
+      font-size: 14px;
+      color: var(--slider-thumb);
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      canvas {
+        margin-right: 20px;
+      }
+
+      .controls {
+        width: 30%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+    </svg>
+  </button>
+
+  <div class="container">
+    <canvas id="spirographCanvas"></canvas>
+    <div class="controls">
+      <label for="sizeRange">Розмір:</label>
+      <input type="range" id="sizeRange" min="200" max="800" value="400">
+
+      <label for="RRange">Радіус зовнішнього кола (R):</label>
+      <input type="range" id="RRange" min="50" max="400" value="200">
+
+      <label for="rRange">Радіус внутрішнього кола (r):</label>
+      <input type="range" id="rRange" min="10" max="200" value="50">
+
+      <label for="dRange">Відстань до точки малювання (d):</label>
+      <input type="range" id="dRange" min="10" max="200" value="75">
+
+      <label for="bgColor">Колір фону:</label>
+      <input type="color" id="bgColor" value="#ffffff">
+
+      <label for="lineColor">Колір ліній:</label>
+      <input type="color" id="lineColor" value="#007bff">
+
+      <label for="lineWidthRange">Товщина ліній (0.01 - 20):</label>
+      <input type="range" id="lineWidthRange" min="1" max="2000" value="100">
+      <span id="lineWidthValue">1.00</span>
+
+      <label for="iterationsRange">Кількість ітерацій (1 - 500,000):</label>
+      <input type="range" id="iterationsRange" min="1" max="500000" value="10000">
+      <span id="iterationsValue">10000</span>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('spirographCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let size = 400; // Початковий розмір
+    let R = 200; // Радіус зовнішнього кола
+    let r = 50; // Радіус внутрішнього кола
+    let d = 75; // Відстань до точки малювання
+    let bgColor = '#ffffff'; // Колір фону
+    let lineColor = '#007bff'; // Колір ліній
+    let lineWidth = 1; // Товщина ліній
+    let iterations = 10000; // Кількість ітерацій
+
+    canvas.width = size;
+    canvas.height = size;
+
+    const sizeRange = document.getElementById('sizeRange');
+    const RRange = document.getElementById('RRange');
+    const rRange = document.getElementById('rRange');
+    const dRange = document.getElementById('dRange');
+    const bgColorInput = document.getElementById('bgColor');
+    const lineColorInput = document.getElementById('lineColor');
+    const lineWidthRange = document.getElementById('lineWidthRange');
+    const lineWidthValue = document.getElementById('lineWidthValue');
+    const iterationsRange = document.getElementById('iterationsRange');
+    const iterationsValue = document.getElementById('iterationsValue');
+    const themeToggle = document.getElementById('themeToggle');
+
+    sizeRange.addEventListener('input', updateSpirograph);
+    RRange.addEventListener('input', updateSpirograph);
+    rRange.addEventListener('input', updateSpirograph);
+    dRange.addEventListener('input', updateSpirograph);
+    bgColorInput.addEventListener('input', updateSpirograph);
+    lineColorInput.addEventListener('input', updateSpirograph);
+    lineWidthRange.addEventListener('input', () => {
+      const rawValue = parseInt(lineWidthRange.value);
+      lineWidth = rawValue / 100; // Перетворюємо значення на діапазон 0.01 - 20
+      lineWidthValue.textContent = lineWidth.toFixed(2); // Показуємо значення з двома знаками після коми
+      updateSpirograph();
+    });
+
+    iterationsRange.addEventListener('input', () => {
+      iterations = parseInt(iterationsRange.value);
+      iterationsValue.textContent = iterations.toLocaleString(); // Форматуємо число з розділювачами
+      updateSpirograph();
+    });
+
+    function updateSpirograph() {
+      size = parseInt(sizeRange.value);
+      R = parseInt(RRange.value);
+      r = parseInt(rRange.value);
+      d = parseInt(dRange.value);
+      bgColor = bgColorInput.value;
+      lineColor = lineColorInput.value;
+
+      canvas.width = size;
+      canvas.height = size;
+
+      drawSpirograph();
+    }
+
+    function drawSpirograph() {
+      ctx.clearRect(0, 0, size, size);
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, size, size);
+
+      const centerX = size / 2;
+      const centerY = size / 2;
+
+      ctx.beginPath();
+      for (let i = 0; i < iterations; i++) {
+        const theta = (i * Math.PI) / 180; // Кут у радіанах
+        const x = centerX + (R - r) * Math.cos(theta) + d * Math.cos(((R - r) / r) * theta);
+        const y = centerY + (R - r) * Math.sin(theta) - d * Math.sin(((R - r) / r) * theta);
+
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = lineWidth;
+      ctx.stroke();
+    }
+
+    // Темна/світла тема
+    let isDarkTheme = false;
+    themeToggle.addEventListener('click', () => {
+      isDarkTheme = !isDarkTheme;
+      document.body.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+    });
+
+    // Початкове малювання
+    drawSpirograph();
+  </script>
+</body>
+</html>
