@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Медитаційний застосунок</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    #controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #6c5ce7;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #5a4ac9;
+    }
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #mandala-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      background-color: #fff;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .mandala-shape {
+      position: absolute;
+      background-color: #6c5ce7;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Медитаційний застосунок</h1>
+  <div id="controls">
+    <button onclick="generateMandala()">Генерувати мандалу</button>
+    <div class="volume-control">
+      <button onclick="playSound('mantra')">Відтворити мантру</button>
+      <input type="range" id="mantra-volume" min="0" max="1" step="0.1" value="1" oninput="setVolume('mantra', this.value)">
+    </div>
+    <div class="volume-control">
+      <button onclick="playSound('bells')">Відтворити дзвіночки</button>
+      <input type="range" id="bells-volume" min="0" max="1" step="0.1" value="1" oninput="setVolume('bells', this.value)">
+    </div>
+    <div class="volume-control">
+      <button onclick="playSound('nature')">Природні звуки</button>
+      <input type="range" id="nature-volume" min="0" max="1" step="0.1" value="1" oninput="setVolume('nature', this.value)">
+    </div>
+    <div class="volume-control">
+      <button onclick="playSound('tibetan-bowl')">Тибетська чаша</button>
+      <input type="range" id="tibetan-bowl-volume" min="0" max="1" step="0.1" value="1" oninput="setVolume('tibetan-bowl', this.value)">
+    </div>
+    <button onclick="stopAllSounds()">Зупинити всі звуки</button>
+  </div>
+  <div id="mandala-container"></div>
+
+  <audio id="mantra-sound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+  <audio id="bells-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-01.mp3"></audio>
+  <audio id="nature-sound" src="https://www.soundjay.com/nature/sounds/rain-01.mp3" loop></audio>
+  <audio id="tibetan-bowl-sound" src="https://www.soundjay.com/misc/sounds/tibetan-bowl-om-01.mp3"></audio>
+
+  <script>
+    const mandalaContainer = document.getElementById('mandala-container');
+    const mantraSound = document.getElementById('mantra-sound');
+    const bellsSound = document.getElementById('bells-sound');
+    const natureSound = document.getElementById('nature-sound');
+    const tibetanBowlSound = document.getElementById('tibetan-bowl-sound');
+
+    function generateMandala() {
+      // Очищаємо контейнер перед генерацією нової мандали
+      mandalaContainer.innerHTML = '';
+
+      // Генеруємо випадкову кількість фігур
+      const shapeCount = Math.floor(Math.random() * 10) + 5;
+
+      for (let i = 0; i < shapeCount; i++) {
+        const shape = document.createElement('div');
+        shape.classList.add('mandala-shape');
+
+        // Випадковий розмір та позиція
+        const size = Math.random() * 80 + 20; // Розмір від 20 до 100px
+        const x = Math.random() * 300; // Позиція по X
+        const y = Math.random() * 300; // Позиція по Y
+
+        // Стилізація фігури
+        shape.style.width = `${size}px`;
+        shape.style.height = `${size}px`;
+        shape.style.left = `${x}px`;
+        shape.style.top = `${y}px`;
+        shape.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 70%)`;
+
+        // Додаємо фігуру до контейнера
+        mandalaContainer.appendChild(shape);
+      }
+    }
+
+    function playSound(soundType) {
+      stopAllSounds(); // Зупиняємо всі інші звуки перед відтворенням нового
+      switch (soundType) {
+        case 'mantra':
+          mantraSound.play();
+          break;
+        case 'bells':
+          bellsSound.play();
+          break;
+        case 'nature':
+          natureSound.play();
+          break;
+        case 'tibetan-bowl':
+          tibetanBowlSound.play();
+          break;
+      }
+    }
+
+    function setVolume(soundType, volume) {
+      switch (soundType) {
+        case 'mantra':
+          mantraSound.volume = volume;
+          break;
+        case 'bells':
+          bellsSound.volume = volume;
+          break;
+        case 'nature':
+          natureSound.volume = volume;
+          break;
+        case 'tibetan-bowl':
+          tibetanBowlSound.volume = volume;
+          break;
+      }
+    }
+
+    function stopAllSounds() {
+      mantraSound.pause();
+      mantraSound.currentTime = 0;
+      bellsSound.pause();
+      bellsSound.currentTime = 0;
+      natureSound.pause();
+      natureSound.currentTime = 0;
+      tibetanBowlSound.pause();
+      tibetanBowlSound.currentTime = 0;
+    }
+
+    // Генеруємо початкову мандалу при завантаженні сторінки
+    generateMandala();
+  </script>
+</body>
+</html>
