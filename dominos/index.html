@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Гра в Доміно</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .lobby {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .room {
+      margin: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+    .game {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    .player-list {
+      margin-top: 20px;
+    }
+    .player {
+      margin: 5px;
+      padding: 5px;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    input {
+      margin: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="lobby">
+      <h1>Лоббі Гри в Доміно</h1>
+      <input type="text" id="username" placeholder="Введіть ваш нікнейм" />
+      <button onclick="createRoom()">Створити кімнату</button>
+      <button onclick="joinRoom()">Приєднатися до кімнати</button>
+      <input type="text" id="roomId" placeholder="Введіть ID кімнати" />
+      <div id="rooms"></div>
+    </div>
+    <div class="game">
+      <h2>Гра в Доміно</h2>
+      <div class="player-list" id="playerList"></div>
+    </div>
+  </div>
+
+  <script>
+    const rooms = {};
+    const players = {};
+
+    function createRoom() {
+      const username = document.getElementById('username').value;
+      if (!username) {
+        alert('Будь ласка, введіть ваш нікнейм.');
+        return;
+      }
+
+      const roomId = generateRoomId();
+      rooms[roomId] = { players: [] };
+      joinGame(roomId, username);
+    }
+
+    function joinRoom() {
+      const username = document.getElementById('username').value;
+      const roomId = document.getElementById('roomId').value;
+
+      if (!username || !roomId) {
+        alert('Будь ласка, введіть ваш нікнейм та ID кімнати.');
+        return;
+      }
+
+      if (!rooms[roomId]) {
+        alert('Кімната не існує.');
+        return;
+      }
+
+      if (rooms[roomId].players.length >= 6) {
+        alert('Кімната повна.');
+        return;
+      }
+
+      joinGame(roomId, username);
+    }
+
+    function joinGame(roomId, username) {
+      const room = rooms[roomId];
+      room.players.push(username);
+
+      // Оновлюємо інтерфейс
+      document.querySelector('.lobby').style.display = 'none';
+      document.querySelector('.game').style.display = 'flex';
+
+      const playerList = document.getElementById('playerList');
+      playerList.innerHTML = '';
+      room.players.forEach(player => {
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'player';
+        playerDiv.textContent = player;
+        playerList.appendChild(playerDiv);
+      });
+    }
+
+    function generateRoomId() {
+      let roomId;
+      do {
+        roomId = Math.random().toString(36).substring(2, 6).toUpperCase();
+      } while (rooms[roomId]);
+      return roomId;
+    }
+
+    // Відображення доступних кімнат
+    function updateRoomsDisplay() {
+      const roomsDiv = document.getElementById('rooms');
+      roomsDiv.innerHTML = '';
+      for (const [roomId, room] of Object.entries(rooms)) {
+        const roomDiv = document.createElement('div');
+        roomDiv.className = 'room';
+        roomDiv.textContent = `Кімната ${roomId} (${room.players.length}/6)`;
+        roomsDiv.appendChild(roomDiv);
+      }
+    }
+
+    setInterval(updateRoomsDisplay, 1000);
+  </script>
+</body>
+</html>
