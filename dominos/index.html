@@ -5,172 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Гра в Доміно</title>
   <style>
-  body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, #1a1a1a, #333333);
-    color: #e0e0e0;
-  }
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-  }
-  h1, h2 {
-    color: #ffd700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  }
-  .lobby {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  }
-  .game {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  }
-  input, button {
-    margin: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  input {
-    background-color: #444;
-    color: #fff;
-    border: 1px solid #555;
-  }
-  input:focus {
-    outline: none;
-    border-color: #ffd700;
-    box-shadow: 0 0 5px #ffd700;
-  }
-  button {
-    background: linear-gradient(to bottom, #ffcc00, #e6b800);
-    color: #000;
-    font-weight: bold;
-    transition: transform 0.2s ease;
-  }
-  button:hover {
-    transform: scale(1.05);
-    background: linear-gradient(to bottom, #e6b800, #ffcc00);
-  }
-  .room {
-    margin: 10px;
-    padding: 10px;
-    background: linear-gradient(to bottom, #444, #333);
-    border: 1px solid #555;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    color: #ffd700;
-  }
-  .player-list {
-    margin-top: 20px;
-  }
-  .player {
-    margin: 5px;
-    padding: 5px 10px;
-    background: linear-gradient(to bottom, #555, #444);
-    border: 1px solid #666;
-    border-radius: 5px;
-    color: #ffd700;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  }
-  .board {
-    margin-top: 20px;
-    padding: 10px;
-    background: linear-gradient(to bottom, #333, #222);
-    border: 1px solid #444;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    min-height: 50px;
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .board div {
-    margin: 5px;
-    padding: 5px 10px;
-    background: linear-gradient(to bottom, #ffcc00, #e6b800);
-    border: 1px solid #d4af37;
-    border-radius: 5px;
-    color: #000;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  }
-  .hand {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .hand div {
-    padding: 10px 20px;
-    background: linear-gradient(to bottom, #555, #444);
-    border: 1px solid #666;
-    border-radius: 5px;
-    color: #ffd700;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  }
-  .hand div:hover {
-    transform: scale(1.1);
-    background: linear-gradient(to bottom, #666, #555);
-  }
+  /* Загальний стиль */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #1a1a1a, #333333);
+  color: #e0e0e0;
+}
 
-  /* Попередні стилі залишаються тими самими */
-  .domino-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 100px;
-    background: linear-gradient(to bottom, #555, #444);
-    border: 1px solid #666;
-    border-radius: 5px;
-    color: #ffd700;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  }
-  .domino-half {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 50%;
-    position: relative;
-  }
-  .dot {
-    width: 8px;
-    height: 8px;
-    background-color: #ffd700;
-    border-radius: 50%;
-  }
-  .hand div:hover {
-    transform: scale(1.1);
-    background: linear-gradient(to bottom, #666, #555);
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+/* Стиль кісточки доміно */
+.domino-tile {
+  position: relative;
+  width: 80px;
+  height: 160px;
+  background: linear-gradient(to bottom, #f0f0f0, #d9d9d9);
+  border: 2px solid #888;
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.3), 
+    inset 0 2px 4px rgba(255, 255, 255, 0.5), 
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.domino-tile:hover {
+  transform: rotateX(10deg) rotateY(10deg);
+}
+
+.domino-half {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  position: relative;
+  border-bottom: 2px solid #888;
+}
+
+.domino-half:last-child {
+  border-bottom: none;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: #000;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Додавання 3D-ефекту */
+.domino-tile::before,
+.domino-tile::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  opacity: 0.3;
+}
+
+.domino-tile::before {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+  transform: translateZ(1px);
+}
+
+.domino-tile::after {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+  transform: translateZ(-1px);
+}
 </style>
 </head>
 <body>
@@ -298,13 +215,16 @@ function updateGameDisplay(roomId) {
 function renderDominoTile(tile) {
   const [top, bottom] = tile;
 
+  // Створюємо контейнер для кісточки
   const tileDiv = document.createElement('div');
   tileDiv.className = 'domino-tile';
 
+  // Функція для створення половини кісточки
   function createHalf(value) {
     const halfDiv = document.createElement('div');
     halfDiv.className = 'domino-half';
 
+    // Розташування крапок
     const positions = {
       0: [],
       1: [[1, 1]],
@@ -333,6 +253,7 @@ function renderDominoTile(tile) {
       ],
     };
 
+    // Додаємо крапки
     for (const [row, col] of positions[value]) {
       const dot = document.createElement('div');
       dot.className = 'dot';
@@ -344,6 +265,7 @@ function renderDominoTile(tile) {
     return halfDiv;
   }
 
+  // Додаємо верхню і нижню половини
   tileDiv.appendChild(createHalf(top));
   tileDiv.appendChild(createHalf(bottom));
 
