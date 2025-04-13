@@ -134,6 +134,43 @@
     transform: scale(1.1);
     background: linear-gradient(to bottom, #666, #555);
   }
+
+  /* Попередні стилі залишаються тими самими */
+  .domino-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 100px;
+    background: linear-gradient(to bottom, #555, #444);
+    border: 1px solid #666;
+    border-radius: 5px;
+    color: #ffd700;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  .domino-half {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    position: relative;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ffd700;
+    border-radius: 50%;
+  }
+  .hand div:hover {
+    transform: scale(1.1);
+    background: linear-gradient(to bottom, #666, #555);
+  }
 </style>
 </head>
 <body>
@@ -157,178 +194,241 @@
 
   <script>
     const rooms = {};
-    const dominoSet = generateDominoSet();
+const dominoSet = generateDominoSet();
 
-    function generateDominoSet() {
-      const set = [];
-      for (let i = 0; i <= 6; i++) {
-        for (let j = i; j <= 6; j++) {
-          set.push([i, j]);
-        }
-      }
-      return set;
+// Генерація набору доміно
+function generateDominoSet() {
+  const set = [];
+  for (let i = 0; i <= 6; i++) {
+    for (let j = i; j <= 6; j++) {
+      set.push([i, j]);
+    }
+  }
+  return set;
+}
+
+// Перемішування масиву
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+// Створення нової кімнати
+function createRoom() {
+  const username = document.getElementById('username').value;
+  if (!username) {
+    alert('Будь ласка, введіть ваш нікнейм.');
+    return;
+  }
+
+  const roomId = generateRoomId();
+  rooms[roomId] = { players: [], deck: [...dominoSet], board: [], turn: 0 };
+  shuffle(rooms[roomId].deck);
+  joinGame(roomId, username);
+}
+
+// Приєднання до існуючої кімнати
+function joinRoom() {
+  const username = document.getElementById('username').value;
+  const roomId = document.getElementById('roomId').value;
+
+  if (!username || !roomId) {
+    alert('Будь ласка, введіть ваш нікнейм та ID кімнати.');
+    return;
+  }
+
+  if (!rooms[roomId]) {
+    alert('Кімната не існує.');
+    return;
+  }
+
+  if (rooms[roomId].players.length >= 6) {
+    alert('Кімната повна.');
+    return;
+  }
+
+  joinGame(roomId, username);
+}
+
+// Приєднання до гри
+function joinGame(roomId, username) {
+  const room = rooms[roomId];
+  const hand = room.deck.splice(0, 7); // Роздача 7 кісточок
+  room.players.push({ name: username, hand });
+
+  // Оновлюємо інтерфейс
+  document.querySelector('.lobby').style.display = 'none';
+  document.querySelector('.game').style.display = 'flex';
+
+  updateGameDisplay(roomId);
+}
+
+// Оновлення інтерфейсу гри
+function updateGameDisplay(roomId) {
+  const room = rooms[roomId];
+  const currentPlayer = room.players[room.turn];
+
+  const playerList = document.getElementById('playerList');
+  playerList.innerHTML = '';
+  room.players.forEach((player, index) => {
+    const playerDiv = document.createElement('div');
+    playerDiv.className = 'player';
+    playerDiv.textContent = `${player.name} (${index === room.turn ? 'Його хід' : ''})`;
+    playerList.appendChild(playerDiv);
+  });
+
+  const boardDiv = document.getElementById('board');
+  boardDiv.innerHTML = '';
+  room.board.forEach(tile => {
+    boardDiv.appendChild(renderDominoTile(tile));
+  });
+
+  const handDiv = document.getElementById('hand');
+  handDiv.innerHTML = '';
+  currentPlayer.hand.forEach((tile, index) => {
+    const tileDiv = renderDominoTile(tile);
+    tileDiv.onclick = () => selectTile(index);
+    handDiv.appendChild(tileDiv);
+  });
+}
+
+// Відображення кісточки доміно з крапками
+function renderDominoTile(tile) {
+  const [top, bottom] = tile;
+
+  const tileDiv = document.createElement('div');
+  tileDiv.className = 'domino-tile';
+
+  function createHalf(value) {
+    const halfDiv = document.createElement('div');
+    halfDiv.className = 'domino-half';
+
+    const positions = {
+      0: [],
+      1: [[1, 1]],
+      2: [[0, 0], [2, 2]],
+      3: [[0, 0], [1, 1], [2, 2]],
+      4: [
+        [0, 0],
+        [0, 2],
+        [2, 0],
+        [2, 2],
+      ],
+      5: [
+        [0, 0],
+        [0, 2],
+        [1, 1],
+        [2, 0],
+        [2, 2],
+      ],
+      6: [
+        [0, 0],
+        [0, 1],
+        [0, 2],
+        [2, 0],
+        [2, 1],
+        [2, 2],
+      ],
+    };
+
+    for (const [row, col] of positions[value]) {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.style.gridRow = row + 1;
+      dot.style.gridColumn = col + 1;
+      halfDiv.appendChild(dot);
     }
 
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
+    return halfDiv;
+  }
+
+  tileDiv.appendChild(createHalf(top));
+  tileDiv.appendChild(createHalf(bottom));
+
+  return tileDiv;
+}
+
+let selectedTileIndex = null;
+
+// Обрання кісточки
+function selectTile(index) {
+  selectedTileIndex = index;
+}
+
+// Зробити хід
+function makeMove() {
+  const roomId = Object.keys(rooms).find(roomId => rooms[roomId].players.some(player => player.name === document.getElementById('username').value));
+  if (!roomId) return;
+
+  const room = rooms[roomId];
+  const currentPlayer = room.players[room.turn];
+
+  if (selectedTileIndex === null) {
+    alert('Будь ласка, оберіть кісточку.');
+    return;
+  }
+
+  const selectedTile = currentPlayer.hand[selectedTileIndex];
+  if (room.board.length === 0) {
+    // Перший хід
+    room.board.push(selectedTile);
+  } else {
+    const firstTile = room.board[0];
+    const lastTile = room.board[room.board.length - 1];
+
+    if (selectedTile[0] === lastTile[1]) {
+      room.board.push(selectedTile);
+    } else if (selectedTile[1] === lastTile[1]) {
+      room.board.push([selectedTile[1], selectedTile[0]]);
+    } else if (selectedTile[1] === firstTile[0]) {
+      room.board.unshift(selectedTile);
+    } else if (selectedTile[0] === firstTile[0]) {
+      room.board.unshift([selectedTile[1], selectedTile[0]]);
+    } else {
+      alert('Ця кісточка не підходить. Спробуйте іншу.');
+      return;
     }
+  }
 
-    function createRoom() {
-      const username = document.getElementById('username').value;
-      if (!username) {
-        alert('Будь ласка, введіть ваш нікнейм.');
-        return;
-      }
+  currentPlayer.hand.splice(selectedTileIndex, 1);
+  selectedTileIndex = null;
 
-      const roomId = generateRoomId();
-      rooms[roomId] = { players: [], deck: [...dominoSet], board: [], turn: 0 };
-      shuffle(rooms[roomId].deck);
-      joinGame(roomId, username);
-    }
+  if (currentPlayer.hand.length === 0) {
+    alert(`${currentPlayer.name} переміг!`);
+    delete rooms[roomId];
+    document.querySelector('.game').style.display = 'none';
+    document.querySelector('.lobby').style.display = 'flex';
+    return;
+  }
 
-    function joinRoom() {
-      const username = document.getElementById('username').value;
-      const roomId = document.getElementById('roomId').value;
+  room.turn = (room.turn + 1) % room.players.length;
+  updateGameDisplay(roomId);
+}
 
-      if (!username || !roomId) {
-        alert('Будь ласка, введіть ваш нікнейм та ID кімнати.');
-        return;
-      }
+// Генерація унікального ID кімнати
+function generateRoomId() {
+  let roomId;
+  do {
+    roomId = Math.random().toString(36).substring(2, 6).toUpperCase();
+  } while (rooms[roomId]);
+  return roomId;
+}
 
-      if (!rooms[roomId]) {
-        alert('Кімната не існує.');
-        return;
-      }
+// Оновлення списку кімнат
+function updateRoomsDisplay() {
+  const roomsDiv = document.getElementById('rooms');
+  roomsDiv.innerHTML = '';
+  for (const [roomId, room] of Object.entries(rooms)) {
+    const roomDiv = document.createElement('div');
+    roomDiv.className = 'room';
+    roomDiv.textContent = `Кімната ${roomId} (${room.players.length}/6)`;
+    roomsDiv.appendChild(roomDiv);
+  }
+}
 
-      if (rooms[roomId].players.length >= 6) {
-        alert('Кімната повна.');
-        return;
-      }
-
-      joinGame(roomId, username);
-    }
-
-    function joinGame(roomId, username) {
-      const room = rooms[roomId];
-      const hand = room.deck.splice(0, 7); // Роздача 7 кісточок
-      room.players.push({ name: username, hand });
-
-      // Оновлюємо інтерфейс
-      document.querySelector('.lobby').style.display = 'none';
-      document.querySelector('.game').style.display = 'flex';
-
-      updateGameDisplay(roomId);
-    }
-
-    function updateGameDisplay(roomId) {
-      const room = rooms[roomId];
-      const currentPlayer = room.players[room.turn];
-
-      const playerList = document.getElementById('playerList');
-      playerList.innerHTML = '';
-      room.players.forEach((player, index) => {
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'player';
-        playerDiv.textContent = `${player.name} (${index === room.turn ? 'Його хід' : ''})`;
-        playerList.appendChild(playerDiv);
-      });
-
-      const boardDiv = document.getElementById('board');
-      boardDiv.innerHTML = '';
-      room.board.forEach(tile => {
-        const tileDiv = document.createElement('div');
-        tileDiv.textContent = `[${tile[0]}|${tile[1]}]`;
-        boardDiv.appendChild(tileDiv);
-      });
-
-      const handDiv = document.getElementById('hand');
-      handDiv.innerHTML = '';
-      currentPlayer.hand.forEach((tile, index) => {
-        const tileDiv = document.createElement('div');
-        tileDiv.textContent = `[${tile[0]}|${tile[1]}]`;
-        tileDiv.onclick = () => selectTile(index);
-        handDiv.appendChild(tileDiv);
-      });
-    }
-
-    let selectedTileIndex = null;
-
-    function selectTile(index) {
-      selectedTileIndex = index;
-    }
-
-    function makeMove() {
-      const roomId = Object.keys(rooms).find(roomId => rooms[roomId].players.some(player => player.name === document.getElementById('username').value));
-      if (!roomId) return;
-
-      const room = rooms[roomId];
-      const currentPlayer = room.players[room.turn];
-
-      if (selectedTileIndex === null) {
-        alert('Будь ласка, оберіть кісточку.');
-        return;
-      }
-
-      const selectedTile = currentPlayer.hand[selectedTileIndex];
-      if (room.board.length === 0) {
-        // Перший хід
-        room.board.push(selectedTile);
-      } else {
-        const firstTile = room.board[0];
-        const lastTile = room.board[room.board.length - 1];
-
-        if (selectedTile[0] === lastTile[1]) {
-          room.board.push(selectedTile);
-        } else if (selectedTile[1] === lastTile[1]) {
-          room.board.push([selectedTile[1], selectedTile[0]]);
-        } else if (selectedTile[1] === firstTile[0]) {
-          room.board.unshift(selectedTile);
-        } else if (selectedTile[0] === firstTile[0]) {
-          room.board.unshift([selectedTile[1], selectedTile[0]]);
-        } else {
-          alert('Ця кісточка не підходить. Спробуйте іншу.');
-          return;
-        }
-      }
-
-      currentPlayer.hand.splice(selectedTileIndex, 1);
-      selectedTileIndex = null;
-
-      if (currentPlayer.hand.length === 0) {
-        alert(`${currentPlayer.name} переміг!`);
-        delete rooms[roomId];
-        document.querySelector('.game').style.display = 'none';
-        document.querySelector('.lobby').style.display = 'flex';
-        return;
-      }
-
-      room.turn = (room.turn + 1) % room.players.length;
-      updateGameDisplay(roomId);
-    }
-
-    function generateRoomId() {
-      let roomId;
-      do {
-        roomId = Math.random().toString(36).substring(2, 6).toUpperCase();
-      } while (rooms[roomId]);
-      return roomId;
-    }
-
-    function updateRoomsDisplay() {
-      const roomsDiv = document.getElementById('rooms');
-      roomsDiv.innerHTML = '';
-      for (const [roomId, room] of Object.entries(rooms)) {
-        const roomDiv = document.createElement('div');
-        roomDiv.className = 'room';
-        roomDiv.textContent = `Кімната ${roomId} (${room.players.length}/6)`;
-        roomsDiv.appendChild(roomDiv);
-      }
-    }
-
-    setInterval(updateRoomsDisplay, 1000);
+setInterval(updateRoomsDisplay, 1000);
   </script>
 </body>
 </html>
