@@ -139,6 +139,19 @@
         inset 0 -2px 4px rgba(0, 0, 0, 0.2);
       transform-style: preserve-3d;
       transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .domino-tile.horizontal {
+      width: 120px;
+      height: 60px;
+      flex-direction: row;
+    }
+
+    .domino-tile.vertical {
+      width: 60px;
+      height: 120px;
     }
 
     .domino-tile:hover {
@@ -182,6 +195,11 @@
       .domino-tile {
         width: 50px;
         height: 100px;
+      }
+
+      .domino-tile.horizontal {
+        width: 100px;
+        height: 50px;
       }
 
       .dot {
@@ -324,6 +342,13 @@
       const tileDiv = document.createElement('div');
       tileDiv.className = 'domino-tile';
 
+      // Додаємо клас залежно від значень
+      if (top === bottom) {
+        tileDiv.classList.add('vertical'); // Вертикальна кісточка
+      } else {
+        tileDiv.classList.add('horizontal'); // Горизонтальна кісточка
+      }
+
       // Функція для створення половини кісточки
       function createHalf(value) {
         const halfDiv = document.createElement('div');
@@ -391,6 +416,24 @@
 
     // Обрання кісточки
     function selectTile(index) {
+      const roomId = Object.keys(rooms).find(roomId => rooms[roomId].players.some(player => player.name === document.getElementById('username').value));
+      if (!roomId) return;
+
+      const room = rooms[roomId];
+      const currentPlayer = room.players[room.turn];
+
+      // Знімаємо виділення з попередньої кісточки
+      const handContainer = document.getElementById('handContainer');
+      const previousSelectedTile = handContainer.querySelector('.selected');
+      if (previousSelectedTile) {
+        previousSelectedTile.classList.remove('selected');
+      }
+
+      // Додаємо виділення до нової кісточки
+      const selectedTileDiv = handContainer.children[index];
+      selectedTileDiv.classList.add('selected');
+
+      // Зберігаємо індекс вибраної кісточки
       selectedTileIndex = index;
     }
 
