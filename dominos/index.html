@@ -197,7 +197,25 @@
     .empty-dot {
       visibility: hidden;
     }
+/* Стиль для кісточок у руці гравця (завжди вертикальні) */
+.hand-container .domino-tile {
+  width: 60px;
+  height: 120px;
+  flex-direction: column; /* Завжди вертикальні */
+}
 
+/* Блок для відображення номера кімнати */
+.room-id {
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(to bottom, #444, #333);
+  border: 1px solid #555;
+  border-radius: 5px;
+  color: #ffd700;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+  font-weight: bold;
+}
     /* Адаптація для мобільних пристроїв */
     @media (max-width: 600px) {
       h1, h2 {
@@ -228,6 +246,7 @@
         gap: 5px;
       }
     }
+     
   </style>
 </head>
 <body>
@@ -327,6 +346,11 @@ function updateGameDisplay(roomId) {
   const room = rooms[roomId];
   const currentPlayer = room.players[room.turn];
 
+  // Вивід номера кімнати
+  const roomIdDiv = document.getElementById('roomIdDisplay');
+  roomIdDiv.textContent = `Кімната: ${roomId}`;
+
+  // Оновлення списку гравців
   const playerList = document.getElementById('playerList');
   playerList.innerHTML = '';
   room.players.forEach((player, index) => {
@@ -336,12 +360,14 @@ function updateGameDisplay(roomId) {
     playerList.appendChild(playerDiv);
   });
 
+  // Оновлення дошки
   const boardDiv = document.getElementById('board');
   boardDiv.innerHTML = '';
   room.board.forEach(tile => {
     boardDiv.appendChild(renderDominoTile(tile));
   });
 
+  // Оновлення руки гравця
   const handContainer = document.getElementById('handContainer');
   handContainer.innerHTML = '';
   currentPlayer.hand.forEach((tile, index) => {
