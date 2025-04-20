@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Гра в Доміно</title>
-   <style>
+  <style>
     /* Базовий стиль */
     body {
       font-family: Arial, sans-serif;
@@ -197,25 +197,27 @@
     .empty-dot {
       visibility: hidden;
     }
-/* Стиль для кісточок у руці гравця (завжди вертикальні) */
-.hand-container .domino-tile {
-  width: 60px;
-  height: 120px;
-  flex-direction: column; /* Завжди вертикальні */
-}
 
-/* Блок для відображення номера кімнати */
-.room-id {
-  margin-top: 10px;
-  padding: 10px;
-  background: linear-gradient(to bottom, #444, #333);
-  border: 1px solid #555;
-  border-radius: 5px;
-  color: #ffd700;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  font-size: 18px;
-  font-weight: bold;
-}
+    /* Стиль для кісточок у руці гравця (завжди вертикальні) */
+    .hand-container .domino-tile {
+      width: 60px;
+      height: 120px;
+      flex-direction: column; /* Завжди вертикальні */
+    }
+
+    /* Блок для відображення номера кімнати */
+    .room-id {
+      margin-top: 10px;
+      padding: 10px;
+      background: linear-gradient(to bottom, #444, #333);
+      border: 1px solid #555;
+      border-radius: 5px;
+      color: #ffd700;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      font-size: 18px;
+      font-weight: bold;
+    }
+
     /* Адаптація для мобільних пристроїв */
     @media (max-width: 600px) {
       h1, h2 {
@@ -246,7 +248,6 @@
         gap: 5px;
       }
     }
-     
   </style>
 </head>
 <body>
@@ -261,6 +262,8 @@
     </div>
     <div class="game">
       <h2>Гра в Доміно</h2>
+      <!-- Блок для відображення номера кімнати -->
+      <div id="roomIdDisplay" class="room-id"></div>
       <div class="player-list" id="playerList"></div>
       <div class="board" id="board"></div>
       <div class="hand-container" id="handContainer"></div>
@@ -268,8 +271,9 @@
     </div>
   </div>
 
+  <!-- Підключення JavaScript -->
   <script>
-const rooms = {};
+  const rooms = {};
 const dominoSet = generateDominoSet();
 
 // Генерація набору доміно
