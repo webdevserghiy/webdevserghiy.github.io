@@ -80,7 +80,7 @@ function updateGameDisplay(roomId) {
   room.players.forEach((player, index) => {
     const playerDiv = document.createElement('div');
     playerDiv.className = 'player';
-    playerDiv.textContent = `${player.name} (${index === room.turn ? 'Його хід' : ''})`;
+    playerDiv.textContent = `${player.name} ${index === room.turn ? 'ХОДИТЬ ГРАВЕЦЬ' : ''} `;
     playerList.appendChild(playerDiv);
   });
 
