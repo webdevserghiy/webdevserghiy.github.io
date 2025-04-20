@@ -1,0 +1,172 @@
+/* Базовий стиль */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #1a1a1a, #333333);
+  color: #e0e0e0;
+  overflow-x: hidden; /* Заборона горизонтального скролу */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Стиль лоббі */
+.lobby {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 400px;
+}
+
+input, button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+input {
+  background-color: #444;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+button {
+  background: linear-gradient(to bottom, #ffcc00, #e6b800);
+  color: #000;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.room {
+  margin: 10px 0;
+  padding: 15px;
+  background: linear-gradient(to bottom, #444, #333);
+  border: 1px solid #555;
+  border-radius: 5px;
+  color: #ffd700;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Стиль гри */
+.game {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 400px;
+}
+
+.player-list {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.player {
+  margin: 5px 0;
+  padding: 10px;
+  background: linear-gradient(to bottom, #555, #444);
+  border: 1px solid #666;
+  border-radius: 5px;
+  color: #ffd700;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.board {
+  margin-top: 20px;
+  padding: 10px;
+  background: linear-gradient(to bottom, #333, #222);
+  border: 1px solid #444;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hand {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.domino-tile {
+  position: relative;
+  width: 60px;
+  height: 120px;
+  background: linear-gradient(to bottom, #f0f0f0, #d9d9d9);
+  border: 2px solid #888;
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.3), 
+    inset 0 2px 4px rgba(255, 255, 255, 0.5), 
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.domino-tile:hover {
+  transform: rotateX(10deg) rotateY(10deg);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Адаптація для мобільних пристроїв */
+@media (max-width: 600px) {
+  h1, h2 {
+    font-size: 24px;
+  }
+
+  input, button {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .domino-tile {
+    width: 50px;
+    height: 100px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .hand {
+    gap: 5px;
+  }
+}
