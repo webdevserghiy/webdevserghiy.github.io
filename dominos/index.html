@@ -4,7 +4,196 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Гра в Доміно</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Базовий стиль */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #1a1a1a, #333333);
+      color: #e0e0e0;
+      overflow-x: hidden; /* Заборона горизонтального скролу */
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Стиль лоббі */
+    .lobby {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    input {
+      background-color: #444;
+      color: #fff;
+      border: 1px solid #555;
+    }
+
+    button {
+      background: linear-gradient(to bottom, #ffcc00, #e6b800);
+      color: #000;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    .room {
+      margin: 10px 0;
+      padding: 15px;
+      background: linear-gradient(to bottom, #444, #333);
+      border: 1px solid #555;
+      border-radius: 5px;
+      color: #ffd700;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Стиль гри */
+    .game {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .player-list {
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .player {
+      margin: 5px 0;
+      padding: 10px;
+      background: linear-gradient(to bottom, #555, #444);
+      border: 1px solid #666;
+      border-radius: 5px;
+      color: #ffd700;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .board {
+      margin-top: 20px;
+      padding: 10px;
+      background: linear-gradient(to bottom, #333, #222);
+      border: 1px solid #444;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hand-container {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .domino-tile {
+      position: relative;
+      width: 60px;
+      height: 120px;
+      background: linear-gradient(to bottom, #f0f0f0, #d9d9d9);
+      border: 2px solid #888;
+      border-radius: 8px;
+      box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.3), 
+        inset 0 2px 4px rgba(255, 255, 255, 0.5), 
+        inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease;
+    }
+
+    .domino-tile:hover {
+      transform: rotateX(10deg) rotateY(10deg);
+    }
+
+    .domino-half {
+      display: grid;
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+      height: 50%;
+      position: relative;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background-color: #000;
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+      justify-self: center;
+      align-self: center;
+    }
+
+    .empty-dot {
+      visibility: hidden;
+    }
+
+    /* Адаптація для мобільних пристроїв */
+    @media (max-width: 600px) {
+      h1, h2 {
+        font-size: 24px;
+      }
+
+      input, button {
+        font-size: 14px;
+        padding: 12px;
+      }
+
+      .domino-tile {
+        width: 50px;
+        height: 100px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+      }
+
+      .hand-container {
+        gap: 5px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -20,263 +209,263 @@
       <h2>Гра в Доміно</h2>
       <div class="player-list" id="playerList"></div>
       <div class="board" id="board"></div>
-      <div class="hand" id="hand"></div>
+      <div class="hand-container" id="handContainer"></div>
       <button onclick="makeMove()">Зробити хід</button>
     </div>
   </div>
+
   <script>
     const rooms = {};
-const dominoSet = generateDominoSet();
+    const dominoSet = generateDominoSet();
 
-// Генерація набору доміно
-function generateDominoSet() {
-  const set = [];
-  for (let i = 0; i <= 6; i++) {
-    for (let j = i; j <= 6; j++) {
-      set.push([i, j]);
-    }
-  }
-  return set;
-}
-
-// Перемішування масиву
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-// Створення нової кімнати
-function createRoom() {
-  const username = document.getElementById('username').value;
-  if (!username) {
-    alert('Будь ласка, введіть ваш нікнейм.');
-    return;
-  }
-
-  const roomId = generateRoomId();
-  rooms[roomId] = { players: [], deck: [...dominoSet], board: [], turn: 0 };
-  shuffle(rooms[roomId].deck);
-  joinGame(roomId, username);
-}
-
-// Приєднання до існуючої кімнати
-function joinRoom() {
-  const username = document.getElementById('username').value;
-  const roomId = document.getElementById('roomId').value;
-
-  if (!username || !roomId) {
-    alert('Будь ласка, введіть ваш нікнейм та ID кімнати.');
-    return;
-  }
-
-  if (!rooms[roomId]) {
-    alert('Кімната не існує.');
-    return;
-  }
-
-  if (rooms[roomId].players.length >= 6) {
-    alert('Кімната повна.');
-    return;
-  }
-
-  joinGame(roomId, username);
-}
-
-// Приєднання до гри
-function joinGame(roomId, username) {
-  const room = rooms[roomId];
-  const hand = room.deck.splice(0, 7); // Роздача 7 кісточок
-  room.players.push({ name: username, hand });
-
-  // Оновлюємо інтерфейс
-  document.querySelector('.lobby').style.display = 'none';
-  document.querySelector('.game').style.display = 'flex';
-
-  updateGameDisplay(roomId);
-}
-
-// Оновлення інтерфейсу гри
-function updateGameDisplay(roomId) {
-  const room = rooms[roomId];
-  const currentPlayer = room.players[room.turn];
-
-  const playerList = document.getElementById('playerList');
-  playerList.innerHTML = '';
-  room.players.forEach((player, index) => {
-    const playerDiv = document.createElement('div');
-    playerDiv.className = 'player';
-    playerDiv.textContent = `${player.name} ${index === room.turn ? 'ХОДИТЬ ГРАВЕЦЬ' : ''} `;
-    playerList.appendChild(playerDiv);
-  });
-
-  const boardDiv = document.getElementById('board');
-  boardDiv.innerHTML = '';
-  room.board.forEach(tile => {
-    boardDiv.appendChild(renderDominoTile(tile));
-  });
-
-  const handContainer = document.getElementById('handContainer');
-  handContainer.innerHTML = '';
-  currentPlayer.hand.forEach((tile, index) => {
-    const tileDiv = renderDominoTile(tile);
-    tileDiv.onclick = () => selectTile(index);
-    handContainer.appendChild(tileDiv);
-  });
-}
-
-// Відображення кісточки доміно з крапками
-function renderDominoTile(tile) {
-  const [top, bottom] = tile;
-
-  // Створюємо контейнер для кісточки
-  const tileDiv = document.createElement('div');
-  tileDiv.className = 'domino-tile';
-
-  // Функція для створення половини кісточки
-  function createHalf(value) {
-    const halfDiv = document.createElement('div');
-    halfDiv.className = 'domino-half';
-
-    // Розташування крапок у сітці 2x3
-    const positions = {
-      0: [],
-      1: [[1, 1]], // Середина
-      2: [
-        [0, 0], // Верхній лівий кут
-        [2, 2], // Нижній правий кут
-      ],
-      3: [
-        [0, 0], // Верхній лівий кут
-        [1, 1], // Середина
-        [2, 2], // Нижній правий кут
-      ],
-      4: [
-        [0, 0], // Верхній лівий кут
-        [0, 2], // Верхній правий кут
-        [2, 0], // Нижній лівий кут
-        [2, 2], // Нижній правий кут
-      ],
-      5: [
-        [0, 0], // Верхній лівий кут
-        [0, 2], // Верхній правий кут
-        [1, 1], // Середина
-        [2, 0], // Нижній лівий кут
-        [2, 2], // Нижній правий кут
-      ],
-      6: [
-        [0, 0], // Верхній лівий кут
-        [0, 1], // Верхній центр
-        [0, 2], // Верхній правий кут
-        [2, 0], // Нижній лівий кут
-        [2, 1], // Нижній центр
-        [2, 2], // Нижній правий кут
-      ],
-    };
-
-    // Додаємо крапки
-    for (let row = 0; row < 2; row++) {
-      for (let col = 0; col < 3; col++) {
-        const dotDiv = document.createElement('div');
-        dotDiv.className = 'dot';
-        if (!positions[value].some(([r, c]) => r === row && c === col)) {
-          dotDiv.classList.add('empty-dot'); // Зробити крапку невидимою
+    // Генерація набору доміно
+    function generateDominoSet() {
+      const set = [];
+      for (let i = 0; i <= 6; i++) {
+        for (let j = i; j <= 6; j++) {
+          set.push([i, j]);
         }
-        halfDiv.appendChild(dotDiv);
+      }
+      return set;
+    }
+
+    // Перемішування масиву
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
     }
 
-    return halfDiv;
-  }
+    // Створення нової кімнати
+    function createRoom() {
+      const username = document.getElementById('username').value;
+      if (!username) {
+        alert('Будь ласка, введіть ваш нікнейм.');
+        return;
+      }
 
-  // Додаємо верхню і нижню половини
-  tileDiv.appendChild(createHalf(top));
-  tileDiv.appendChild(createHalf(bottom));
-
-  return tileDiv;
-}
-
-let selectedTileIndex = null;
-
-// Обрання кісточки
-function selectTile(index) {
-  selectedTileIndex = index;
-}
-
-// Зробити хід
-function makeMove() {
-  const roomId = Object.keys(rooms).find(roomId => rooms[roomId].players.some(player => player.name === document.getElementById('username').value));
-  if (!roomId) return;
-
-  const room = rooms[roomId];
-  const currentPlayer = room.players[room.turn];
-
-  if (selectedTileIndex === null) {
-    alert('Будь ласка, оберіть кісточку.');
-    return;
-  }
-
-  const selectedTile = currentPlayer.hand[selectedTileIndex];
-  if (room.board.length === 0) {
-    // Перший хід
-    room.board.push(selectedTile);
-  } else {
-    const firstTile = room.board[0];
-    const lastTile = room.board[room.board.length - 1];
-
-    if (selectedTile[0] === lastTile[1]) {
-      room.board.push(selectedTile);
-    } else if (selectedTile[1] === lastTile[1]) {
-      room.board.push([selectedTile[1], selectedTile[0]]);
-    } else if (selectedTile[1] === firstTile[0]) {
-      room.board.unshift(selectedTile);
-    } else if (selectedTile[0] === firstTile[0]) {
-      room.board.unshift([selectedTile[1], selectedTile[0]]);
-    } else {
-      alert('Ця кісточка не підходить. Спробуйте іншу.');
-      return;
+      const roomId = generateRoomId();
+      rooms[roomId] = { players: [], deck: [...dominoSet], board: [], turn: 0 };
+      shuffle(rooms[roomId].deck);
+      joinGame(roomId, username);
     }
-  }
 
-  currentPlayer.hand.splice(selectedTileIndex, 1);
-  selectedTileIndex = null;
+    // Приєднання до існуючої кімнати
+    function joinRoom() {
+      const username = document.getElementById('username').value;
+      const roomId = document.getElementById('roomId').value;
 
-  if (currentPlayer.hand.length === 0) {
-    alert(`${currentPlayer.name} переміг!`);
-    delete rooms[roomId];
-    document.querySelector('.game').style.display = 'none';
-    document.querySelector('.lobby').style.display = 'flex';
-    return;
-  }
+      if (!username || !roomId) {
+        alert('Будь ласка, введіть ваш нікнейм та ID кімнати.');
+        return;
+      }
 
-  room.turn = (room.turn + 1) % room.players.length;
-  updateGameDisplay(roomId);
-}
+      if (!rooms[roomId]) {
+        alert('Кімната не існує.');
+        return;
+      }
 
-// Генерація унікального ID кімнати
-function generateRoomId() {
-  let roomId;
-  do {
-    roomId = Math.random().toString(36).substring(2, 6).toUpperCase();
-  } while (rooms[roomId]);
-  return roomId;
-}
+      if (rooms[roomId].players.length >= 6) {
+        alert('Кімната повна.');
+        return;
+      }
 
-// Оновлення списку кімнат
-function updateRoomsDisplay() {
-  const roomsDiv = document.getElementById('rooms');
-  roomsDiv.innerHTML = '';
-  for (const [roomId, room] of Object.entries(rooms)) {
-    const roomDiv = document.createElement('div');
-    roomDiv.className = 'room';
-    roomDiv.textContent = `Кімната ${roomId} (${room.players.length}/6)`;
-    roomsDiv.appendChild(roomDiv);
-  }
-}
+      joinGame(roomId, username);
+    }
 
-setInterval(updateRoomsDisplay, 1000);
+    // Приєднання до гри
+    function joinGame(roomId, username) {
+      const room = rooms[roomId];
+      const hand = room.deck.splice(0, 7); // Роздача 7 кісточок
+      room.players.push({ name: username, hand });
 
+      // Оновлюємо інтерфейс
+      document.querySelector('.lobby').style.display = 'none';
+      document.querySelector('.game').style.display = 'flex';
+
+      updateGameDisplay(roomId);
+    }
+
+    // Оновлення інтерфейсу гри
+    function updateGameDisplay(roomId) {
+      const room = rooms[roomId];
+      const currentPlayer = room.players[room.turn];
+
+      const playerList = document.getElementById('playerList');
+      playerList.innerHTML = '';
+      room.players.forEach((player, index) => {
+        const playerDiv = document.createElement('div');
+        playerDiv.className = 'player';
+        playerDiv.textContent = `${player.name} (${index === room.turn ? 'Його хід' : ''})`;
+        playerList.appendChild(playerDiv);
+      });
+
+      const boardDiv = document.getElementById('board');
+      boardDiv.innerHTML = '';
+      room.board.forEach(tile => {
+        boardDiv.appendChild(renderDominoTile(tile));
+      });
+
+      const handContainer = document.getElementById('handContainer');
+      handContainer.innerHTML = '';
+      currentPlayer.hand.forEach((tile, index) => {
+        const tileDiv = renderDominoTile(tile);
+        tileDiv.onclick = () => selectTile(index);
+        handContainer.appendChild(tileDiv);
+      });
+    }
+
+    // Відображення кісточки доміно з крапками
+    function renderDominoTile(tile) {
+      const [top, bottom] = tile;
+
+      // Створюємо контейнер для кісточки
+      const tileDiv = document.createElement('div');
+      tileDiv.className = 'domino-tile';
+
+      // Функція для створення половини кісточки
+      function createHalf(value) {
+        const halfDiv = document.createElement('div');
+        halfDiv.className = 'domino-half';
+
+        // Розташування крапок у сітці 2x3
+        const positions = {
+          0: [],
+          1: [[1, 1]], // Середина
+          2: [
+            [0, 0], // Верхній лівий кут
+            [2, 2], // Нижній правий кут
+          ],
+          3: [
+            [0, 0], // Верхній лівий кут
+            [1, 1], // Середина
+            [2, 2], // Нижній правий кут
+          ],
+          4: [
+            [0, 0], // Верхній лівий кут
+            [0, 2], // Верхній правий кут
+            [2, 0], // Нижній лівий кут
+            [2, 2], // Нижній правий кут
+          ],
+          5: [
+            [0, 0], // Верхній лівий кут
+            [0, 2], // Верхній правий кут
+            [1, 1], // Середина
+            [2, 0], // Нижній лівий кут
+            [2, 2], // Нижній правий кут
+          ],
+          6: [
+            [0, 0], // Верхній лівий кут
+            [0, 1], // Верхній центр
+            [0, 2], // Верхній правий кут
+            [2, 0], // Нижній лівий кут
+            [2, 1], // Нижній центр
+            [2, 2], // Нижній правий кут
+          ],
+        };
+
+        // Додаємо крапки
+        for (let row = 0; row < 2; row++) {
+          for (let col = 0; col < 3; col++) {
+            const dotDiv = document.createElement('div');
+            dotDiv.className = 'dot';
+            if (!positions[value].some(([r, c]) => r === row && c === col)) {
+              dotDiv.classList.add('empty-dot'); // Зробити крапку невидимою
+            }
+            halfDiv.appendChild(dotDiv);
+          }
+        }
+
+        return halfDiv;
+      }
+
+      // Додаємо верхню і нижню половини
+      tileDiv.appendChild(createHalf(top));
+      tileDiv.appendChild(createHalf(bottom));
+
+      return tileDiv;
+    }
+
+    let selectedTileIndex = null;
+
+    // Обрання кісточки
+    function selectTile(index) {
+      selectedTileIndex = index;
+    }
+
+    // Зробити хід
+    function makeMove() {
+      const roomId = Object.keys(rooms).find(roomId => rooms[roomId].players.some(player => player.name === document.getElementById('username').value));
+      if (!roomId) return;
+
+      const room = rooms[roomId];
+      const currentPlayer = room.players[room.turn];
+
+      if (selectedTileIndex === null) {
+        alert('Будь ласка, оберіть кісточку.');
+        return;
+      }
+
+      const selectedTile = currentPlayer.hand[selectedTileIndex];
+      if (room.board.length === 0) {
+        // Перший хід
+        room.board.push(selectedTile);
+      } else {
+        const firstTile = room.board[0];
+        const lastTile = room.board[room.board.length - 1];
+
+        if (selectedTile[0] === lastTile[1]) {
+          room.board.push(selectedTile);
+        } else if (selectedTile[1] === lastTile[1]) {
+          room.board.push([selectedTile[1], selectedTile[0]]);
+        } else if (selectedTile[1] === firstTile[0]) {
+          room.board.unshift(selectedTile);
+        } else if (selectedTile[0] === firstTile[0]) {
+          room.board.unshift([selectedTile[1], selectedTile[0]]);
+        } else {
+          alert('Ця кісточка не підходить. Спробуйте іншу.');
+          return;
+        }
+      }
+
+      currentPlayer.hand.splice(selectedTileIndex, 1);
+      selectedTileIndex = null;
+
+      if (currentPlayer.hand.length === 0) {
+        alert(`${currentPlayer.name} переміг!`);
+        delete rooms[roomId];
+        document.querySelector('.game').style.display = 'none';
+        document.querySelector('.lobby').style.display = 'flex';
+        return;
+      }
+
+      room.turn = (room.turn + 1) % room.players.length;
+      updateGameDisplay(roomId);
+    }
+
+    // Генерація унікального ID кімнати
+    function generateRoomId() {
+      let roomId;
+      do {
+        roomId = Math.random().toString(36).substring(2, 6).toUpperCase();
+      } while (rooms[roomId]);
+      return roomId;
+    }
+
+    // Оновлення списку кімнат
+    function updateRoomsDisplay() {
+      const roomsDiv = document.getElementById('rooms');
+      roomsDiv.innerHTML = '';
+      for (const [roomId, room] of Object.entries(rooms)) {
+        const roomDiv = document.createElement('div');
+        roomDiv.className = 'room';
+        roomDiv.textContent = `Кімната ${roomId} (${room.players.length}/6)`;
+        roomsDiv.appendChild(roomDiv);
+      }
+    }
+
+    setInterval(updateRoomsDisplay, 1000);
   </script>
 </body>
 </html>
